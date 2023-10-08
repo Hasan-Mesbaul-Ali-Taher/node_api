@@ -6,6 +6,9 @@ app.get('/', (req, res) => {
     res.send('Welcome to Node API');
 });
 
+app.get('/blog', (req, res) => {
+    res.send('Welcome to Node API - Blog. This is a blog page');
+});
 
 // start server to listen to port 3000 and the callback funtion will be called once the server is started
 app.listen(3000, () => {
