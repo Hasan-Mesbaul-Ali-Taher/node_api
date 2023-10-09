@@ -7,7 +7,8 @@ const Product = require('./models/productModel');
 
 // add middleware
 app.use(express.json());
-
+// to use form urlencoded data
+app.use(express.urlencoded({ extended: false }));
 
 // routes
 app.get('/', (req, res) => {
@@ -54,6 +55,20 @@ app.put('/products/:id', async(req, res) => {
         }
         const updatedProduct = await Product.findById(id);
         res.status(200).json(updatedProduct);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
+
+// Delete a product by ID
+app.delete('/products/:id', async(req, res) => {
+    try {
+        const {id} = req.params;
+        const product = await Product.findByIdAndDelete(id);
+        if(!product) {
+            return res.status(404).json({ message: `Product not found with ID ${id}` });
+        }
+        res.status(200).json(product);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
