@@ -35,10 +35,26 @@ app.get('/products/:id', async(req, res) => {
         // or
         // const {id} = req.params;
         // const product = await Product.findById(id);
-        
+
         res.status(200).json(product);
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({ message: error.message });
+    }
+})
+
+// Update product by ID
+app.put('/products/:id', async(req, res) => {   
+    try {
+        const {id} = req.params;
+        const product = await Product.findByIdAndUpdate(id, req.body);
+        // WE can not find any product with this id in database
+        if(!product) {
+            return res.status(404).json({ message: `Product not found with ID ${id}` });
+        }
+        const updatedProduct = await Product.findById(id);
+        res.status(200).json(updatedProduct);
+    } catch (error) {
         res.status(500).json({ message: error.message });
     }
 })
