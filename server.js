@@ -1,9 +1,14 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 
 // Import product module
 const Product = require('./models/productModel');
+
+// 
+const MONGO_URL = process.env.MONGO_URL
+const PORT = process.env.PORT || 3000;
 
 // add middleware
 app.use(express.json());
@@ -88,12 +93,12 @@ app.post('/products', async(req, res) => {
 })
 
 mongoose
-.connect('mongodb+srv://hasan:hasan@cluster0.wdogl2i.mongodb.net/node_api?retryWrites=true&w=majority&appName=AtlasApp')
+.connect(MONGO_URL)
 .then(() => {
     console.log('MongoDB connected');
     // start server to listen to port 3000 and the callback funtion will be called once the server is started
-    app.listen(3000, () => {
-    console.log('server started. Node api is running on: http://localhost:3000');
+    app.listen(PORT, () => {
+    console.log(`server started. Node api is running on: http://localhost:${PORT}`);
     });
 })
 .catch(err =>{
